@@ -1,0 +1,34 @@
+<!-- debug="true"：开启调试 -->
+<!--<configuration debug="true">-->
+<configuration>
+
+    <!-- Console appender -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Sifting appender -->
+    <appender name="SIFT" class="org.example.SiftingAppenderDemo">
+        <discriminator>
+            <key>yourFieldName</key>
+            <defaultValue>unknown</defaultValue>
+        </discriminator>
+        <sift>
+            <appender name="FILE-${yourFieldName}" class="ch.qos.logback.core.FileAppender">
+                <file>logs/${yourFieldName}.log</file>
+                <encoder>
+                    <pattern>%d [%thread] %-5level %logger{36} - %msg%n</pattern>
+                </encoder>
+            </appender>
+        </sift>
+    </appender>
+
+    <!-- Root logger -->
+    <root level="debug">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="SIFT"/>
+    </root>
+
+</configuration>
